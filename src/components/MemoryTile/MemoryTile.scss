@@ -1,0 +1,50 @@
+.memory-tile {
+  background-color: transparent;
+  perspective: 1000px;
+
+  .tile-inner {
+    position: relative;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+
+    .tile-inner-front,
+    .tile-inner-back {
+      position: absolute;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tile-inner-front {
+      pointer-events: none;
+      border: 1px solid #ddd;
+
+      svg {
+        pointer-events: none;
+        width: 50px;
+        opacity: 0.5;
+      }
+    }
+
+    .tile-inner-back {
+      pointer-events: none;
+      transform: rotateY(180deg);
+      overflow: hidden;
+
+      img.tile-img {
+        pointer-events: none;
+        height: auto;
+        width: 200px;
+      }
+    }
+
+    &.clicked {
+      transform: rotateY(180deg);
+    }
+
+    &.inactive {
+      background: #ddd;
+    }
+  }
+}
