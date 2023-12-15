@@ -1,6 +1,8 @@
 .memory-board {
   display: grid;
-  grid-template-columns: repeat(8, 150px);
-  grid-template-rows: repeat(4, 150px);
+  justify-content: center;
+  grid-template-columns: repeat(6, 150px);
+  grid-template-rows: repeat(3, 150px);
   gap: 10px;
+  height: auto;
 }
