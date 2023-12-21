@@ -1,66 +1,72 @@
+import { title } from "process";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const useTiles = () => {
     const checkMatch = (id: number, tileId: number, event: any) => {
+        // TODO : for joanna to refactor and re-create        
+        // const clickedTile = array.find((tile) => tile.id === id);
+        // if (clickedTile) {
+        //     clickedTile.isActive = true;
+        //     setArray([...array, clickedTile]);
+        // }
 
-        console.log();
-        
-        const clickedTile = array.find((tile) => tile.id === id);
-        if (clickedTile) {
-            clickedTile.isActive = true;
-            setArray([...array, clickedTile]);
-        }
-
-        const activeTiles: number = array.filter((tile) => tile.isActive).length;
+        // const activeTiles: number = array.filter((tile) => tile.isActive).length;
         
 
-        if (activeTiles === 2) {
+        // if (activeTiles === 2) {
             
 
-            setTimeout(() => {
-                const matchedTiles: number = array.filter((tile) => tile.tileId === tileId && tile.isActive).length;
+        //     setTimeout(() => {
+        //         const matchedTiles: number = array.filter((tile) => tile.tileId === tileId && tile.isActive).length;
 
-                if (matchedTiles === 2) {
-                   // dispatch({ type: "INCREMENT" });
+        //         if (matchedTiles === 2) {
+        //            // dispatch({ type: "INCREMENT" });
 
-                    setArray(array.map((tile) => {
-                        tile.isActive = false;
-                        tile.isMatched = tile.tileId === tileId ? true : tile.isMatched;
-                        return tile;
-                    }));
-                } else {
-                    setArray(array.map((tile) => {
-                        tile.isActive = false;
-                        return tile;
-                    }));
-                }
-            }, 1000);
-        }
+        //             // setArray(array.map((tile) => {
+        //             //     tile.isActive = false;
+        //             //     tile.isMatched = tile.tileId === tileId ? true : tile.isMatched;
+        //             //     return tile;
+        //             // }));
+        //         } else {
+        //             setArray(array.map((tile) => {
+        //                 tile.isActive = false;
+        //                 return tile;
+        //             }));
+        //         }
+        //     }, 1000);
+        // }
     };
 
-    const [array, setArray] = useState([
-        { id: 1, tileId: 1, path: 1, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 2, tileId: 1, path: 1, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 3, tileId: 2, path: 2, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 4, tileId: 2, path: 2, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 5, tileId: 3, path: 3, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 6, tileId: 3, path: 3, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 7, tileId: 4, path: 4, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 8, tileId: 4, path: 4, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 9, tileId: 5, path: 5, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 10, tileId: 5, path: 5, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 11, tileId: 6, path: 6, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 12, tileId: 6, path: 6, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 13, tileId: 7, path: 7, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 14, tileId: 7, path: 7, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 15, tileId: 8, path: 8, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 16, tileId: 8, path: 8, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 17, tileId: 9, path: 9, isActive: false, isMatched: false, onTileClicked: checkMatch },
-        { id: 18, tileId: 9, path: 9, isActive: false, isMatched: false, onTileClicked: checkMatch },
-    ]);
+    const generateRandomNumber = (maxNumberOfTiles: number): number => {
+        let randomNum = Math.floor(Math.random() * maxNumberOfTiles) + 1;
+        return randomNum;
+    }
 
-    return { array, checkMatch };
+
+    const generateTileId = (maxNumberOfTiles: number, existedTiles: Array<number>): number => {
+        const randomNumber = generateRandomNumber(maxNumberOfTiles);
+        if(existedTiles.includes(randomNumber)){
+            return generateTileId(maxNumberOfTiles, existedTiles);
+        }
+        return randomNumber;
+    }
+
+    const generateTiles = (): Array<any> => {
+        const maxNumberOfTiles = 18;
+        const tiles = [];
+        const alreadySelectedIds: Array<number> = [];
+        for (let index = 0; index < maxNumberOfTiles;index++) {
+            const id = generateTileId(maxNumberOfTiles, alreadySelectedIds);
+            alreadySelectedIds.push(id);
+            tiles.push({
+                id, isActive: false, isMatched: false, onTileClicked: checkMatch
+            });
+        }
+        return tiles;
+    }
+
+    return { generateTiles, checkMatch };
 
 }
 

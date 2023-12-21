@@ -3,17 +3,17 @@ import MemoryTile from "../MemoryTile/MemoryTile";
 import "./MemoryBoard.scss";
 
 const MemoryBoard = () => {
-  const { array, checkMatch } = useTiles();
+  const { generateTiles, checkMatch } = useTiles();
 
   return (
     <div className="memory-board full" role="memory-board">
-      {array.map((tile, index) => {
+      {generateTiles().map((tile, index) => {
         return (
           <MemoryTile
             key={index}
             id={tile.id}
-            tileId={tile.tileId}
-            path={tile.path}
+            tileId={Math.ceil(tile.id / 2)}
+            path={Math.ceil(tile.id / 2)}
             isActive={tile.isActive}
             isMatched={tile.isMatched}
             onTileClicked={checkMatch}
