@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import scoreReducer from "./scoreReducer";
-import activeTileReducer from "./activeTileReducer";
+import tileReducer from "./tileReducer";
 
 const rootReducer = combineReducers({
   scoreReducer,
-  activeTileReducer,
+  tileReducer,
 });
 
 export default rootReducer;

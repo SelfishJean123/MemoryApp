@@ -1,25 +1,17 @@
-import useTiles from "../../customHooks/useTiles";
 import MemoryTile from "../MemoryTile/MemoryTile";
 import "./MemoryBoard.scss";
+import { useSelector } from "react-redux";
+import { Tile } from "../../models/tile.model";
 
 const MemoryBoard = () => {
-  const { generateTiles, checkMatch } = useTiles();
+  const tilesArray = useSelector((state: any) => state.tileReducer.tilesArray);
 
   return (
     <div className="memory-board full" role="memory-board">
-      {generateTiles().map((tile, index) => {
-        return (
-          <MemoryTile
-            key={index}
-            id={tile.id}
-            tileId={Math.ceil(tile.id / 2)}
-            path={Math.ceil(tile.id / 2)}
-            isActive={tile.isActive}
-            isMatched={tile.isMatched}
-            onTileClicked={checkMatch}
-          />
-        );
-      })}
+      {tilesArray.length &&
+        tilesArray.map((tile: Tile, index: number) => {
+          return <MemoryTile key={index} id={tile.id} tileId={tile.tileId} isActive={tile.isActive} isMatched={tile.isMatched} />;
+        })}
     </div>
   );
 };

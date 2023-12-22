@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import MemoryLogin from "./components/MemoryLogin/MemoryLogin";
 import MemoryBoard from "./components/MemoryBoard/MemoryBoard";
+import { useDispatch, useSelector } from "react-redux";
+import useGenerateTiles from "./customHooks/useGenerateTiles";
+import { setTilesArray } from "./store/actions/tileActions";
 import "./App.scss";
-import { useSelector } from "react-redux";
 
 const App = () => {
-  //const score = useSelector((state: { score: number }) => state.score);
+  const score = useSelector((state: any) => state.scoreReducer.score);
+  const tries = useSelector((state: any) => state.scoreReducer.tries);
+  const dispatch = useDispatch();
+  const { generateTiles } = useGenerateTiles();
+
+  useEffect(() => {
+    const initialTilesArray = generateTiles();
+    dispatch(setTilesArray(initialTilesArray));
+  }, []);
 
   const handleLogin = (username: string, password: string) => {
     console.log(`Logged as ${username}`);
@@ -17,7 +27,10 @@ const App = () => {
     <div className="app center-flex">
       <header className="app-header">
         <div className="header-inner-wrapper center-flex full">
-          <div className="menu">Your score: {0}</div>
+          <div className="menu">
+            <h5>Score: {score}</h5>
+            <h5>Tries: {tries}</h5>
+          </div>
 
           <div className="user-dropdown">
             <a className="user-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
