@@ -6,6 +6,8 @@ import { Provider } from "react-redux";
  import configureStore from "redux-mock-store";
 import useCheckTile from "../../customHooks/useCheckTile";
 import { Tile } from "../../models/tile.model";
+import App from "../../App";
+import { assertDeclareModuleExports } from "@babel/types";
 
 const mockStore = configureStore([]);
 
@@ -49,11 +51,7 @@ describe("Memory board domain test", () => {
   it("should be sure that image print twice", () => {
     const itemID = 1;
     const numberOfEles = 2;
-    render(
-      <Provider store={store}>
-        <MemoryBoard />
-      </Provider>,
-    );
+    render(<App />);
     const eles = screen.getAllByTestId(itemID);
     expect(eles.length).toEqual(numberOfEles);
   });
@@ -61,11 +59,11 @@ describe("Memory board domain test", () => {
   it("should be sure that all images are existed and printed twice", () => {
     const maxNumberOfTiles = 18 / 2;
     const twoTilesAllowed = 2;
-    render(
-      <Provider store={store}>
-        <MemoryBoard />
-      </Provider>,
-    );
+    const allTitlesCount = 18;
+    render(<App />);
+    const eles = screen.getAllByRole("listitem");
+    const elesLength = eles.length;
+    expect(elesLength).toStrictEqual(allTitlesCount);
     for (let itemID = 1; itemID <= maxNumberOfTiles; itemID++) {
       const eles = screen.getAllByTestId(itemID);
       expect(eles.length).toEqual(twoTilesAllowed);
@@ -75,11 +73,7 @@ describe("Memory board domain test", () => {
   it("the order of the images inside of the tiles should be random", () => {
     const allTitlesCount = 18;
 
-    render(
-      <Provider store={store}>
-        <MemoryBoard />
-      </Provider>,
-    );
+    render(<App />);
     const eles = screen.getAllByRole("listitem");
     const elesLength = eles.length;
     expect(elesLength).toStrictEqual(allTitlesCount);
